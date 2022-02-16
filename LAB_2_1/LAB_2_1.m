@@ -67,75 +67,75 @@ i = 0;
 % i = 0;
 % 
 % %============================ графики ошибок ==============================
-% figure
-% errorUni = abs(f(x(i*100+1:(i+1)*100, :)) - y(i*100+1:(i+1)*100, :));
-% plot(x(i*100+1:(i+1)*100, :), errorUni)
-% hold all
-% grid on
-% i = i + 1;
-% errorUni = abs(f(x(i*100+1:(i+1)*100, :)) - y(i*100+1:(i+1)*100, :));
-% plot(x(i*100+1:(i+1)*100, :), errorUni)
-% i = i + 1;
-% errorUni = abs(f(x(i*100+1:(i+1)*100, :)) - y(i*100+1:(i+1)*100, :));
-% plot(x(i*100+1:(i+1)*100, :), errorUni)
-% legend('4 nodes', '6 nodes', '8 nodes')
-% title('Uniform error')
-% i = 0;
-% 
-% figure
-% errorUniSpec = abs(f(x3(i*100+2:(i+1)*100-1, :)) - y3(i*100+2:(i+1)*100-1, :));
-% plot(x3(i*100+2:(i+1)*100-1, :), errorUniSpec)
-% hold all
-% grid on
-% i = i + 1;
-% errorUniSpec = abs(f(x3(i*100+2:(i+1)*100-1, :)) - y3(i*100+2:(i+1)*100-1, :));
-% plot(x3(i*100+2:(i+1)*100-1, :), errorUniSpec)
-% i = i + 1;
-% errorUniSpec = abs(f(x3(i*100+2:(i+1)*100-1, :)) - y3(i*100+2:(i+1)*100-1, :));
-% plot(x3(i*100+2:(i+1)*100-1, :), errorUniSpec)
-% legend('4 nodes', '6 nodes', '8 nodes')
-% title('Uniform spec error')
-% i = 0;
-% 
-% figure
-% errorCheb = abs(f(x2(i*100+1:(i+1)*100, :)) - y2(i*100+1:(i+1)*100, :));
-% plot(x2(i*100+1:(i+1)*100, :), errorCheb);
-% hold all
-% grid on
-% i = i + 1;
-% errorCheb = abs(f(x2(i*100+1:(i+1)*100, :)) - y2(i*100+1:(i+1)*100, :));
-% plot(x2(i*100+1:(i+1)*100, :), errorCheb);
-% i = i + 1;
-% errorCheb = abs(f(x2(i*100+1:(i+1)*100, :)) - y2(i*100+1:(i+1)*100, :));
-% plot(x2(i*100+1:(i+1)*100, :), errorCheb);
-% legend('4 nodes', '6 nodes', '8 nodes')
-% title('Chebyshev error')
+figure
+errorUni = abs(f(x(i*100+1:(i+1)*100, :)) - y(i*100+1:(i+1)*100, :));
+plot(x(i*100+1:(i+1)*100, :), errorUni)
+hold all
+grid on
+i = i + 1;
+errorUni = abs(f(x(i*100+1:(i+1)*100, :)) - y(i*100+1:(i+1)*100, :));
+plot(x(i*100+1:(i+1)*100, :), errorUni)
+i = i + 1;
+errorUni = abs(f(x(i*100+1:(i+1)*100, :)) - y(i*100+1:(i+1)*100, :));
+plot(x(i*100+1:(i+1)*100, :), errorUni)
+legend('4 nodes', '6 nodes', '8 nodes')
+title('Uniform error')
+i = 0;
+
+figure
+errorUniSpec = abs(f(x3(i*100+2:(i+1)*100-1, :)) - y3(i*100+2:(i+1)*100-1, :));
+plot(x3(i*100+2:(i+1)*100-1, :), errorUniSpec)
+hold all
+grid on
+i = i + 1;
+errorUniSpec = abs(f(x3(i*100+2:(i+1)*100-1, :)) - y3(i*100+2:(i+1)*100-1, :));
+plot(x3(i*100+2:(i+1)*100-1, :), errorUniSpec)
+i = i + 1;
+errorUniSpec = abs(f(x3(i*100+2:(i+1)*100-1, :)) - y3(i*100+2:(i+1)*100-1, :));
+plot(x3(i*100+2:(i+1)*100-1, :), errorUniSpec)
+legend('4 nodes', '6 nodes', '8 nodes')
+title('Uniform spec error')
+i = 0;
+
+figure
+errorCheb = abs(f(x2(i*100+1:(i+1)*100, :)) - y2(i*100+1:(i+1)*100, :));
+plot(x2(i*100+1:(i+1)*100, :), errorCheb);
+hold all
+grid on
+i = i + 1;
+errorCheb = abs(f(x2(i*100+1:(i+1)*100, :)) - y2(i*100+1:(i+1)*100, :));
+plot(x2(i*100+1:(i+1)*100, :), errorCheb);
+i = i + 1;
+errorCheb = abs(f(x2(i*100+1:(i+1)*100, :)) - y2(i*100+1:(i+1)*100, :));
+plot(x2(i*100+1:(i+1)*100, :), errorCheb);
+legend('4 nodes', '6 nodes', '8 nodes')
+title('Chebyshev error')
 
 %======================= полный график ошибок =============================
 
-errorUni = zeros(1,12);
-errorUniSpec = zeros(1,12);
-errorCheb = zeros(1,12);
-for i=1:12
-    errorUni(i) = max(abs(f(x((i-1)*100+1:i*100, :)) - y((i-1)*100+1:i*100, :)));
-    errorUniSpec(i) = max(abs(f(x3((i-1)*100+2:i*100-1, :)) - y3((i-1)*100+2:i*100-1, :)));
-    errorCheb(i) = max(abs(f(x2((i-1)*100+1:i*100, :)) - y2((i-1)*100+1:i*100, :)));
-end
-n = linspace(5,60,12);
-figure
-semilogy(n+1, errorUni)
-hold on
-grid on
-semilogy(n+1, errorCheb)
-hold on
-semilogy(n+1, errorUniSpec)
-legend('Uniform', 'Chebyshev', 'UniformSpec')
-title('Error dependence on the number of nodes')
+% errorUni = zeros(1,12);
+% errorUniSpec = zeros(1,12);
+% errorCheb = zeros(1,12);
+% for i=1:12
+%     errorUni(i) = max(abs(f(x((i-1)*100+1:i*100, :)) - y((i-1)*100+1:i*100, :)));
+%     errorUniSpec(i) = max(abs(f(x3((i-1)*100+2:i*100-1, :)) - y3((i-1)*100+2:i*100-1, :)));
+%     errorCheb(i) = max(abs(f(x2((i-1)*100+1:i*100, :)) - y2((i-1)*100+1:i*100, :)));
+% end
+% n = linspace(5,60,12);
+% figure
+% semilogy(n+1, errorUni, 'LineWidth', 3)
+% hold on
+% grid on
+% semilogy(n+1, errorCheb, 'LineWidth', 2)
+% hold on
+% semilogy(n+1, errorUniSpec, 'LineWidth', 2)
+% legend('Uniform', 'Chebyshev', 'UniformSpec')
+% title('Error dependence on the number of nodes')
 
 
 % =========================== основная прога =============================
 % figure
-% for n = 5:5:5
+% for n = 5:5:60
 % %data = linspace(a, b, n);
 % subplot(2,2,1)
 % fplot(f, [a, b], 'LineWidth', 3);

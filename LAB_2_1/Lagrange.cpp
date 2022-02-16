@@ -94,8 +94,8 @@ int main() {
         return 0;
     }
     double a = -2.0, b = 2.0;
-    for (int nodesCount = 5; nodesCount <= 60; nodesCount+=5) {
-//    for (int nodesCount = 3; nodesCount <= 7; nodesCount+=2) {
+//    for (int nodesCount = 5; nodesCount <= 60; nodesCount+=5) {
+    for (int nodesCount = 3; nodesCount <= 7; nodesCount+=2) {
             auto *x = new double[nodesCount + 1];
             auto *y = new double[nodesCount + 1];
             for (int i = 0; i <= nodesCount; i++) {
