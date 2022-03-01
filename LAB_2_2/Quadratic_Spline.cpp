@@ -52,7 +52,7 @@ int main() {
         return -1;
     }*/
     double a = -2.0, b = 2.0;
-    for (int n = 3; n <= 7; n+=2) {
+    for (int n = 5; n <= 60; n+=5) {
         auto* x = new double [n + 1];
         auto* y = new double [n + 1];
         for (int i = 0; i <= n; i++) {
@@ -61,5 +61,6 @@ int main() {
         }
         FillFile(QuadSpline, a, b, x, y, n);
     }
+    fclose(QuadSpline);
     return 0;
 }
