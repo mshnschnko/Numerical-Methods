@@ -21,7 +21,8 @@ double derf(double x) {
 }*/
 
 void QuadraticSplineMethod(const double x[], const double y[], polynom g[], int n, const double delta) {
-    double dergCur = derf(x[0]) + delta;
+    double dergCur = derf(x[0]);
+    dergCur += delta * dergCur;
     for (int i = 0; i < n; i++) {
         g[i].a = (y[i+1] - y[i] - dergCur * (x[i+1] - x[i]))/((x[i+1] - x[i]) * (x[i+1] - x[i]));
         g[i].b = dergCur - 2 * g[i].a * x[i];
@@ -86,15 +87,6 @@ int main() {
         std::cout << "Error in opening file" << std::endl;
         return -1;
     }
-/*    try {
-        FILE* QuadSpline = fopen(QuadSplineFileName, "w");
-        if (!QuadSpline)
-            throw std::string("Error in opening file");
-    }
-    catch (const std::string& err){
-        std::cout << err << std::endl;
-        return -1;
-    }*/
     double a = -2.0, b = 2.0;
     //for (int n = 3; n <= 7; n+=2) {
     for (int n = 5; n <= 180; n+=5) {
