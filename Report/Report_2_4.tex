@@ -1,0 +1,128 @@
+\documentclass[a4paper,14pt]{report}
+
+\usepackage{cmap}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{setspace}
+\usepackage{geometry}
+\geometry{top=2cm}
+\geometry{bottom=2cm} % отступ снизу
+\geometry{left=2cm} % отступ справа
+\geometry{right=2cm} % отступ слева
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\graphicspath{{./images/}}
+\makeatletter %%%%% <---- Starting chapter without a pagebreak
+\renewcommand\chapter{\par%
+	\thispagestyle{plain}% \global\@topnum\z@
+	\@afterindentfalse \secdef\@chapter\@schapter}
+\makeatother
+
+\begin{document}
+	
+	\begin{center}
+		\hfill \break
+		\begin{center}
+			\huge{Санкт-Петербургский политехнический университет\\
+				Высшая школа прикладной математики\\
+				и вычислительной физики, ФизМех}
+		\end{center}
+		\hfill \break
+		\hfill \break
+		\hfill \break
+		\hfill \break
+		\hfill \break
+		
+		\huge{Направление подготовки\\
+			<<Прикладная математика и информатика>>}\\
+		\hfill \break
+		\hfill \break
+		\hfill \break
+		\hfill \break
+		\hfill \break
+		\hfill \break
+		\fontsize{14pt}{14pt}\selectfont
+		Отчет по лабораторной работе №3\\
+		<<Численное интегрирование с помощью формул Ньютона-Котеса>>\\
+		\begin{center}
+			Дисциплина: <<Численные методы>>
+		\end{center}
+		\hfill \break
+		\hfill \break
+		\hfill \break
+		\hfill \break
+		\hfill \break
+	\end{center}
+	\hfill \break
+	\hfill \break
+	\fontsize{12pt}{12pt}\selectfont 
+	\begin{tabular}{cccc}
+		\hspace{1cm}Выполнил студент гр. 5030102/00003 & {\hspace{3cm}} & & Анищенко М.Д. \\\\
+		\hspace{-3cm}Преподаватель: &{\hspace{1cm}}& & {\hspace{1cm}} Курц В.В. \\\\
+	\end{tabular}\\
+	\hfill \break
+	\hfill \break
+	\hfill \break
+	\hfill \break
+	\hfill \break
+	\hfill \break
+	\hfill \break
+	\hfill \break
+	\begin{center} Санкт-Петербург 2022 \end{center}
+	\fontsize{14pt}{14pt}\selectfont 
+	\thispagestyle{empty}
+	
+	\newpage
+	\tableofcontents{}
+	\clearpage
+	\chapter{Формулировка задачи и её формализация}
+	\section{Формулировка задачи}
+	Представим определённый интеграл на промежутке \([a,b]\) функции \(F(x)\) в виде
+	\[\int\limits_a^b F(x)dx = \int\limits_a^b p(x)f(x)dx\]
+	где \(p(x)\) --- весовая функция. Необходимо вычислить приближенное значение интеграла, 
+	используя квадратурные формулы:
+	\[\int\limits_a^b p(x)f(x)dx \approx \sum\limits_{k=1}^n A_k f(x_k)\]
+	где \(A_k\) --- коэффициенты, а \(x_k\) --- узлы квадратурной функции.
+	\section{Формализация}
+	В данном варианте необходимо решить задачу, используя формулу Гаусса по трем узлам, для следующей функции на отрезке \([0,3]\):
+	\[F(x)=x^2\cos(2x)+1\]
+	\chapter{Алгоритм метода и условия его применимости}
+	\section{Алгоритм метода}
+	\begin{enumerate}
+		\item Выбрать \([a,b]\), весовую функцию \(p(x)\) и количество узлов \(n\) (которое по условию метода равно трем).\\
+		Возьмём отрезок \([0,3]\), весовую функцию \(p(x)=1\).
+		\item Найти \(\omega(x):\int\limits_a^b p(x)\omega(x)P_{n-1}(x)dx=0, \forall P_{n-1}(x)\).\\
+		Это можно сделать разными способами. Выберем для этого формулу Родрига. Но учтем, что достижение точности мы будем использовать правило Рунге, согласно которому количество отрезков на следубщем шаге становится в два раза больше предыдущего. Поэтому, чтобы на каждом шаге не искать заново корневой полином (и не выполнять повторно следующие шаги), будем использовать отрезок \([-1,1]\), а затем отображать необходимые точки на отрезок \([0,3]\). Тогда формула Родрига принимает вид:
+		\[P_n(x)=\frac{c_n}{p(x)} \frac{d^n}{dx^n}[p(x)Y(x)], Y(x)\in c^{(n)}([a,b]), Y(x)=(x-a)^n(b-x)^n,\]
+		\[p(x)=1, [a,b]=[-1,1], n=1\Rightarrow\]
+		\[\Rightarrow P_3(x)=c_3\frac{d^3}{dx^3}[(1-2x)^3]\]
+		Решая ее, получаем:
+		\[c_3\frac{d^3}{dx^3}[(1-2x)^3]=c_3[72x-120x^3]\]
+		\item Решить \(\omega(x)=0 \Rightarrow x_k, k=1,\ldots,n\)\\
+		Из предыдущего пункта получаем:
+		\[c_3(72x-120x^3)=0 \Rightarrow x(3-5x^2)=0 \Rightarrow\]
+		\[\Rightarrow x_1=-\sqrt{\frac{3}{5}}, x_2=0, x_3=\sqrt{\frac{3}{5}}\]
+		\item Найти \(A_k\). Это тоже можно сделать несколькими способами, но в данном случае проще это будет сделать с помощью первых трех уравнений системы определяющих уравнений.
+		$$
+		\begin{cases}
+			A_1+A_2+A_3=\int\limits_{-1}^1 x^0dx = 2\\
+			A_1x_1+A_2x_2+A_3x_3=\int\limits_{-1}^1 x^1dx = 0\\
+			A_1x_1^2+A_2x_2^2+A_3x_3^2=\int\limits_{-1}^1 x^2dx = \frac{2}{3}\\
+		\end{cases}
+		$$
+		Решая систему, получаем \(A_1=\frac{5}{9}, A_2=\frac{8}{9}, A_3=\frac{5}{9}\).
+	\end{enumerate}
+	Итого получаем следующее выражение для нашей функции на отрезке \([-1,1]\):
+	\[\int\limits_{-1}^1f(x)dx\approx\frac{1}{9}[5f(-\sqrt{\frac{3}{5}})+8f(0)+5f(\sqrt{\frac{3}{5}})]\]
+	Теперь на каждом шаге мы будем отображать точки \(x_1, x_2, x_3\) на отрезок \([a_i,b_i]\). Это отрезки, на которые разбивается отрезок \([a,b]\), т.е. \(a_1=a, b_k=b\), где \(k\) --- количество отрезков разбиения. Затем сложим полученные результаты. Количество слагаемых равно количеству трезков на данном шаге.\\
+	Формула для отображение из отрезка \([-1,1]\) в отрезок \([0,3]\):
+	\[\frac{a+b}{2}+\frac{b-a}{2}x\]
+	\section{Условия применимости}
+	Для того, чтобы формула Гаусса была верна необходимо и достаточно, чтобы количество узлов было не ниже, чем \(\frac{m+1}{2}\), где \(m\) – степень полинома.
+	\chapter{Анализ задачи}
+	Нам необходимо решить несколько задач: решить корневой полином и решить СЛАУ (относительно \(A_k\)). Это мы уже сделали в пункте выше. Затем будем применять полученные результаты для нашей функции \(F(x)=x^2\cos(2x)+1\).
+	\newpage
+	\chapter{Тестовый пример}
+\end{document}
