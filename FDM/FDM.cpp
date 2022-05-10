@@ -54,12 +54,12 @@ void WriteResultA(const double* const xr, int n, const char* filename)
 	fclose(fp);
 }
 
-double p(double x)
+double q(double x)
 {
 	return 4 * x;
 }
 
-double q(double x)
+double r(double x)
 {
 	return (4 * x * x + 3);
 }
@@ -76,9 +76,9 @@ void FillBoard(int n, const double* X, double h, double* w1, double* w2, double*
 	w3[0] = 0;
 	for (int i = 1; i < n; i++)
 	{
-		w1[i] = 1 + h * p(X[i]) / 2;
-		w2[i] = h * h * q(X[i]) - 2;
-		w3[i] = 1 - h * p(X[i]) / 2;
+		w1[i] = 1 + h * q(X[i]) / 2;
+		w2[i] = h * h * r(X[i]) - 2;
+		w3[i] = 1 - h * q(X[i]) / 2;
 	}
 	w1[n] = 0;
 	w2[n] = beta0 * h + beta1;
@@ -127,7 +127,7 @@ int main()
 		return -1;
 	}
 
-	for (int n = 50; n > 9; --n) {
+	for (int n = 500; n > 9; n -= 10) {
 		double* X = new double[n + 1]; //vector X[n+1]
 		double* U = new double[n + 1]; //vector X[n+1]
 		//Grid
@@ -165,20 +165,20 @@ int main()
 		return -1;
 	}
 
-	int n = 50;
+	int n = 500;
 	double alpha0Init = 2;
 	double alpha1Init = -2.5;
 	double AInit = 2;
 	double beta0Init = 3;
 	double beta1Init = 0;
 	double BInit = 3 / exp(1);
-	for (double delta = 0.0000001; delta <= 0.1; delta *= 10) {
-		alpha0 = alpha0Init + delta * alpha0Init;
-		alpha1 = alpha1Init + delta * alpha1Init;
-		A = AInit + delta * AInit;
-		beta0 = beta0Init + delta * beta0Init;
-		beta1 = beta1Init + delta * beta1Init;
-		B = BInit + delta * BInit;
+	for (double delta = 0.00000000000001; delta <= 0.1; delta *= 10) {
+		//alpha0 = alpha0Init + delta * alpha0Init;
+		//alpha1 = alpha1Init + delta * alpha1Init;
+		A = AInit * (1 + delta); //alpha0; //AInit + delta * AInit;
+		//beta0 = beta0Init + delta * beta0Init;
+		//beta1 = beta1Init + delta * beta1Init;
+		B = BInit * (1 + delta);  //beta0 / exp(1); //BInit + delta * BInit;
 		double* X = new double[n + 1]; //vector X[n+1]
 		double* U = new double[n + 1]; //vector X[n+1]
 		//Grid
@@ -208,6 +208,53 @@ int main()
 		delete[] X;
 		delete[] U;
 	}
+	fclose(fp);
+
+
+	if ((fp = fopen("outrageMIN.csv", "w")) == NULL)
+	{
+		printf("Не удалось открыть файл");
+		return -1;
+	}
+
+	for (double delta = 0.00000000000001; delta <= 0.1; delta *= 10) {
+		//alpha0 = alpha0Init - delta * alpha0Init;
+		//alpha1 = alpha1Init + delta * alpha1Init;
+		A = AInit * (1 - delta); //alpha0; //AInit + delta * AInit;
+		//beta0 = beta0Init - delta * beta0Init;
+		//beta1 = beta1Init + delta * beta1Init;
+		B = BInit * (1 - delta); //beta0 / exp(1); //BInit + delta * BInit;
+		double* X = new double[n + 1]; //vector X[n+1]
+		double* U = new double[n + 1]; //vector X[n+1]
+		//Grid
+		double h = (b0 - a0) / n;
+		for (int i = 0; i < n + 1; i++)
+		{
+			X[i] = a0 + i * h;
+			//cout << X[i] << endl;
+		}
+		//===
+		//cout << "h=" << h << endl;
+		double* w1 = new double[n + 1];
+		double* w2 = new double[n + 1];
+		double* w3 = new double[n + 1];
+
+		FillBoard(n, X, h, w1, w2, w3);
+		double* F = FillF(X, n, h);
+
+		SolveMatrix(n + 1, w3, w2, w1, F, U);
+		free(F);
+		WriteResult(U, n + 1, fp);
+
+		//WriteResultA(U, n + 1, "Unew.csv");
+		delete[] w1;
+		delete[] w2;
+		delete[] w3;
+		delete[] X;
+		delete[] U;
+	}
+	fclose(fp);
+
 //===
 //print W
 //printf("w1: ");
